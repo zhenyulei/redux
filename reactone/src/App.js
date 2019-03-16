@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import store from './store'
-
 import { changeInputValue ,addInputValue ,deleteListItem} from './store/actionCreator.js'
+import AppUI from './AppUI'
 
 
 class App extends Component {
@@ -13,28 +13,15 @@ class App extends Component {
   }
 
   render() {
+    const {inputValue,list} = this.state
     return (
-      <div className="App">
-        <label htmlFor="box">
-          输入信息
-          <input id="box" 
-            value = {this.state.inputValue} 
-            onChange = {(e)=>{
-              this.handleInputChange(e)
-            }}
-          />
-          <button onClick={()=>{this.submitData()}}>提交</button>
-          </label>
-        <ul>
-         {
-           this.state.list.map((item,index) => {
-              return (
-                <li key={index} onClick={()=>{this.deleteList(index)}}>{item}</li>
-              )
-           })
-         }
-        </ul>
-      </div>
+      <AppUI
+      inputValue = {inputValue}
+      handleInputChange = {(e)=>{this.handleInputChange(e)}}
+      submitData = {()=>{this.submitData()}}
+      list = {list}
+      deleteList = {(index)=>{this.deleteList(index)}}
+      />
     );
   }
   handleInputChange(e){
@@ -44,15 +31,11 @@ class App extends Component {
     this.setState(store.getState())
   }
   submitData(){
-
     store.dispatch(addInputValue());
   }
   deleteList(index){
     store.dispatch(deleteListItem(index));
   }
-
-
-
 }
 
 export default App;
