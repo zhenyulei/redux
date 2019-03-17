@@ -1,4 +1,5 @@
-import {CHANGE_INPUT_VALUE,ADD_INPUT_VALUE,DELETE_LIST_ITEM} from './actionType.js'
+import {CHANGE_INPUT_VALUE,ADD_INPUT_VALUE,DELETE_LIST_ITEM,INIT_LIST_DATA} from './actionType.js'
+import axios from 'axios'
 
 export const changeInputValue = (value)=> (
     {
@@ -19,4 +20,18 @@ export const  deleteListItem= (index)=> (
         index
     }
 )
-    
+
+export const  initListData = (listData)=> (
+    {
+        type:INIT_LIST_DATA,
+        listData
+    }
+)
+
+export const  getListData = ()=> {
+    return (dispatch)=>{
+        axios.get('/userList.json').then((res)=>{
+            dispatch(initListData(res.data))
+        })
+    }
+}

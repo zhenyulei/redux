@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import './App.css';
 import store from './store'
-import { changeInputValue ,addInputValue ,deleteListItem} from './store/actionCreator.js'
+import { changeInputValue ,addInputValue ,deleteListItem ,getListData} from './store/actionCreator.js'
 import AppUI from './AppUI'
-
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = store.getState();
     store.subscribe(()=>{this.handleStoreChange()})
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.submitData = this.submitData.bind(this);
+    this.deleteList = this.deleteList.bind(this);
+  }
+  componentDidMount(){
+     store.dispatch(getListData())
   }
 
   render() {
@@ -17,10 +22,10 @@ class App extends Component {
     return (
       <AppUI
       inputValue = {inputValue}
-      handleInputChange = {(e)=>{this.handleInputChange(e)}}
-      submitData = {()=>{this.submitData()}}
+      handleInputChange = {this.handleInputChange}
+      submitData = {this.submitData}
       list = {list}
-      deleteList = {(index)=>{this.deleteList(index)}}
+      deleteList = {this.deleteList}
       />
     );
   }
@@ -34,6 +39,7 @@ class App extends Component {
     store.dispatch(addInputValue());
   }
   deleteList(index){
+    console.log(index);
     store.dispatch(deleteListItem(index));
   }
 }
